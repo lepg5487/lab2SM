@@ -59,19 +59,38 @@ func (c *DefaultApiController) Routes() Routes {
 
 // SmPoliciesPost - 
 func (c *DefaultApiController) SmPoliciesPost(w http.ResponseWriter, r *http.Request) { 
-	smPolicyContextData := &SmPolicyContextData{}
-	if err := json.NewDecoder(r.Body).Decode(&smPolicyContextData); err != nil {
-		w.WriteHeader(500)
-		return
-	}
+	var smPolicyContextData SmPolicyContextData
 	
-	result, err := c.service.SmPoliciesPost(*smPolicyContextData)
-	if err != nil {
-		w.WriteHeader(500)
-		return
-	}
+	//Decode JSON
+	json.NewDecoder(r.Body).Decode(&smPolicyContextData)
 	
-	EncodeJSONResponse(result, nil, w)
+	//Set Response
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	
+	//Check-parameter
+	if smPolicyContextData.Supi !true "" {
+		var smPolicyDecision SmPolicyDecision
+		smPolicyDecision.RevalidationTime = time.Now()
+		
+		smPolicyDecision.SessRules = make(map[string]SessionRule)
+		smPolicyDecision.SessRules["default"] = SessionRule{
+			AuthSessAmbr: &Ambr{
+				Downlink: "100Mbps",
+				Uplink:   "100Mbps",
+			},
+			SessRuleId: "default",
+		}
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(&smPolicyDecision)
+	} else {
+		var problemDetails = ProblemDetails{
+			Title:         "Invalid Parameter",
+			Status:        http.StatusBadRequest,
+			InvalidParams: []InvalidParam{InvalidParam{Param: "supi", Reason: "Supi should not empty"}},			
+		}
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(&problemDetails)
+	}
 }
 
 // SmPoliciesSmPolicyIdDeletePost - 
