@@ -71,13 +71,13 @@ func (c *DefaultApiController) SmPoliciesPost(w http.ResponseWriter, r *http.Req
 	//Check-parameter
 	if smPolicyContextData.Supi != "" {
 		var smPolicyDecision SmPolicyDecision
-		var sessionRule SessionRule
+		//var sessionRule SessionRule
 		//Ambr = sessionRule.authSessAmbr
 		smPolicyDecision.RevalidationTime = time.Now()
 		
 		smPolicyDecision.SessRules = make(map[string]SessionRule)
 		smPolicyDecision.SessRules["default"] = SessionRule{
-			AuthSessAmbr: &sessionRule.AuthSessAmbr{
+			AuthSessAmbr: &SessionRule.AuthSessAmbr{
 				Downlink: "100Mbps",
 				Uplink:   "100Mbps",
 			},
