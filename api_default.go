@@ -59,7 +59,7 @@ func (c *DefaultApiController) Routes() Routes {
 }
 
 // SmPoliciesPost - 
-func SmPoliciesPost(w http.ResponseWriter, r *http.Request) { 
+func (c *DefaultApiController) SmPoliciesPost(w http.ResponseWriter, r *http.Request) { 
 	var smPolicyContextData SmPolicyContextData
 	
 	//Decode JSON
@@ -75,7 +75,7 @@ func SmPoliciesPost(w http.ResponseWriter, r *http.Request) {
 		
 		smPolicyDecision.SessRules = make(map[string]SessionRule)
 		smPolicyDecision.SessRules["default"] = SessionRule{
-			AuthSessAmbr: &Ambr{
+			AuthSessAmbr: {
 				Downlink: "100Mbps",
 				Uplink:   "100Mbps",
 			},
