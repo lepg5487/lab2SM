@@ -77,7 +77,7 @@ func (c *DefaultApiController) SmPoliciesPost(w http.ResponseWriter, r *http.Req
 		
 		smPolicyDecision.SessRules = make(map[string]SessionRule)
 		smPolicyDecision.SessRules["default"] = SessionRule{
-			AuthSessAmbr: &sessionRule.authSessAmbr{
+			AuthSessAmbr: &sessionRule.AuthSessAmbr{
 				Downlink: "100Mbps",
 				Uplink:   "100Mbps",
 			},
