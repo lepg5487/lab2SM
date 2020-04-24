@@ -68,7 +68,7 @@ func (c *DefaultApiController) SmPoliciesPost(w http.ResponseWriter, r *http.Req
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	
 	//Check-parameter
-	if smPolicyContextData.Supi !true "" {
+	if smPolicyContextData.Supi != "" {
 		var smPolicyDecision SmPolicyDecision
 		smPolicyDecision.RevalidationTime = time.Now()
 		
